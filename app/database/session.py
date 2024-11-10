@@ -14,16 +14,31 @@ fondos_db = [
     {"_id": "5", "nombre": "FPV_BTG_PACTUAL_DINAMICA", "monto_minimo": 100000, "categoria": "FPV"}
 ]
 
-async def insertar_fondos():
+usuarios_db=[
+    {
+        "_id": "1",
+        "nombre": "julian",
+        "correo": "julian@gmail.com",
+        "telefono": 3005444343,
+        "saldo_disponible": 500000,
+        "saldo_fondos": [0,0,0,0,0],
+        "transacciones": []
+    }
+]
+
+async def insertar_datos():
     try:
         # Obtén la colección "fondos"
         coleccion_fondos = db.fondos
+        # Obtén la colección "usuarios"
+        coleccion_usuarios = db.usuarios
         # Inserta los documentos
-        result = await coleccion_fondos.insert_many(fondos_db)
-        print("Documentos insertados con los IDs:", result.inserted_ids)
+        result_fondos = await coleccion_fondos.insert_many(fondos_db)
+        result_usuarios = await coleccion_usuarios.insert_many(usuarios_db)
+        print("Documentos insertados")
     except Exception as e:
         print("Error al insertar documentos:", e)
 
 # Ejecuta la función asincrónica
 if __name__ == "__main__":
-    asyncio.run(insertar_fondos())
+    asyncio.run(insertar_datos())

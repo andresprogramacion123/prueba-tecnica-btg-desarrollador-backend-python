@@ -10,7 +10,7 @@ Para garantizar la solucion del sistema que permite a los clientes BTG realizar 
 
 2. Diseñar un modelo de datos NOSQL que permita la solucion del problema:
 
-3.Construccion de la aplicacion REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
+3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
 
 **Requisitos de desarrollo:**
 

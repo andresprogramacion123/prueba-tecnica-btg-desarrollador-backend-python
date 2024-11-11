@@ -2,9 +2,9 @@
 
 **Julian Andres Montoya Carvajal C.C 1214727927**
 
-**Parte 1: Necesidad del negocio**
+## Parte 1: Necesidad del negocio
 
-1. Tecnologias utilizadas para garantizar la solucion:
+### 1. Tecnologias utilizadas para garantizar la solucion:
 
 Para garantizar la solucion del sistema que permite a los clientes BTG realizar las acciones de suscribirse a un fondo, Salirse de un fondo, ver el historial de sus ultimas transacciones y envio de notificaciones via email o sms. Utilizaria en el backend el lenguaje de programacion Python debido a su simplicidad a la hora de escribir codigo y ademas a su posibilidad para soportar operaciones asincronas. Ahora para utilizar un framework de python debido a mi experiencia y rapidez a la hora de desarrollar escogeria el framework FastAPI. 
 
@@ -12,9 +12,29 @@ FastAPI es es un framework especializado para escribir API Rest, posee soporte p
 
 MongoDB como base de datos. Debido a que la solucion de la logica del negocio involucra considerar varios casos y se desea de momento una API escalable y flexible en el esquema de datos. Utilizaria una base de datos no relacional (NoSQL) como MongoDB. En la medida que el esquema de datos este bien definido y que la solucion requiera realizar muchas relaciones se podria considerar una base de datos relacional como Postgresql. Pero de momento la mejor opcion es MongoDB debido a su simplicidad y flexibilidad a la hora de establecer esquemas de datos.
 
-2. Diseñar un modelo de datos NOSQL que permita la solucion del problema:
+Amazon SNS y SBS
 
-3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
+Docker y Docker compose
+
+Amazon EC2
+
+### 2. Diseñar un modelo de datos NOSQL que permita la solucion del problema:
+
+Se plantea para la solucion dos colecciones
+
+La primera coleccion es la de fondos que permite registrar los 5 fondos definidos por el negocio. Su esquema es el siguiente:
+
+Un ejemplo un fondo en base de datos:
+
+
+
+La segunda coleccion es la coleccion de usuarios que permite registrar el usario con sus datos basicos pero ademas esta coleccion permite almacenar las transacciones realizados por cada usuario. Su esquema es el siguiente:
+
+Un ejemplo de un usuario en base de datos recien inscrito
+
+Un ejemplo de un usuario en base de datos despues de realizar suscripciones y cancelaciones (transacciones)
+
+### 3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
 
 **Requisitos de desarrollo:**
 
@@ -81,7 +101,7 @@ chmod +x app/prestart.sh
 pytest
 ```
 
-**Parte 2: Consultas SQL**
+## Parte 2: Consultas SQL
 
 ```bash
 SELECT c.nombre

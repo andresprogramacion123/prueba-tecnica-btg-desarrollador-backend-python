@@ -1,9 +1,3 @@
-usando CloudFormation y EC2
-1. Preparar la Plantilla de CloudFormation
-Crea un archivo llamado cloudformation-template.yaml con el siguiente contenido:
-
-yaml
-Copiar código
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Despliegue de FastAPI en EC2 usando CloudFormation
 

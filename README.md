@@ -148,7 +148,7 @@ Este diseño de modelo de datos permite mantener la escalabilidad parcial pues n
 
 ### 3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
 
-![Título del Video](VideoEjecucion2min.mp4)
+[Descargar video](VideoEjecucion2min.mp4)
 
 La API Rest diseñada se puede ejecutar de dos maneras a nivel local:
 

@@ -20,21 +20,179 @@ Amazon EC2
 
 ### 2. Diseñar un modelo de datos NOSQL que permita la solucion del problema:
 
-Se plantea para la solucion dos colecciones
+Se plantea para la solucion dos colecciones.
 
 La primera coleccion es la de fondos que permite registrar los 5 fondos definidos por el negocio. Su esquema es el siguiente:
 
-Un ejemplo un fondo en base de datos:
+```bash
+fondo: {
+  "_id": int,
+  "nombre": str,
+  "monto_minimo": float,
+  "categoria": str (categorico puede ser "FPV" o "FIC")
+}
+```
 
+Un ejemplo de un fondo en base de datos:
 
+```bash
+{
+  "_id": "1",
+  "nombre": "FPV_BTG_PACTUAL_RECAUDADORA",
+  "monto_minimo": 75000,
+  "categoria": "FPV"
+}
+```
 
 La segunda coleccion es la coleccion de usuarios que permite registrar el usario con sus datos basicos pero ademas esta coleccion permite almacenar las transacciones realizados por cada usuario. Su esquema es el siguiente:
 
+```bash
+usuario: {
+  "_id": int,
+  "nombre": str,
+  "correo": str,
+  "telefono": int,
+  "saldo_disponible": float,
+  "saldo_fondos": [
+    float (Saldo en fondo 1),
+    float (Saldo en fondo 2),
+    float (Saldo en fondo 3),
+    float (Saldo en fondo 4),
+    float (Saldo en fondo 5)
+  ],
+  "transacciones": [Transaccion]
+}
+```
+
+donde el objeto Transaccion es:
+
+```bash
+transaccion: {
+  "id": uuid,
+  "id_fondo": int,
+  "nombre_fondo": str,
+  "valor": float,
+  "tipo_transaccion": str (categorico puede ser "Apertura" o "Cancelacion"),
+  "fecha": datetime
+}
+```
+
 Un ejemplo de un usuario en base de datos recien inscrito
+
+```bash
+{
+  "_id": "2",
+  "nombre": "pepito",
+  "correo": "pepito@gmail.com",
+  "telefono": 12345,
+  "saldo_disponible": 500000,
+  "saldo_fondos": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "transacciones": []
+}
+```
 
 Un ejemplo de un usuario en base de datos despues de realizar suscripciones y cancelaciones (transacciones)
 
+```bash
+{
+  "_id": "1",
+  "nombre": "julian",
+  "correo": "julian@gmail.com",
+  "telefono": 3005444343,
+  "saldo_disponible": 300000,
+  "saldo_fondos": [
+    0,
+    200000,
+    0,
+    0,
+    0
+  ],
+  "transacciones": [
+    {
+      "id": "75712a57-bba1-45e1-9d22-7908df0b5e7e",
+      "id_fondo": "1",
+      "nombre_fondo": "FPV_BTG_PACTUAL_RECAUDADORA",
+      "valor": 200000,
+      "tipo_transaccion": "apertura",
+      "fecha": "2024-11-11T03:12:34.164180"
+    },
+    {
+      "id": "74e2d003-4fd1-4789-b660-ad8157acbcd0",
+      "id_fondo": "2",
+      "nombre_fondo": "FPV_BTG_PACTUAL_ECOPETROL",
+      "valor": 200000,
+      "tipo_transaccion": "apertura",
+      "fecha": "2024-11-11T03:18:25.254006"
+    },
+    {
+      "id": "56cd9ab4-4fb1-4630-8a19-d715e57f29ea",
+      "id_fondo": "1",
+      "nombre_fondo": "FPV_BTG_PACTUAL_RECAUDADORA",
+      "valor": 200000,
+      "tipo_transaccion": "cancelacion",
+      "fecha": "2024-11-11T03:18:36.453024"
+    }
+  ]
+}
+```
+
+Con este enfoque se tiene la posibilidad de que un usuario se puede suscribir a varios fondos en la medida que cumpla las respectivas condiciones, ademas puede invertir dinero en un mismo fondo varias veces y en caso de retirarse se le devuelve todo el dinero correspondiente a las diferentes suscripciones al mismo fondo. Ademas el usuario puede invertir en un fondo con un valor mayor al monto minimo del fondo siempre y cuando posee saldo disponible.
+
+Este diseño de modelo de datos permite mantener la escalabilidad parcial pues no se esta considerando el caso de que hayan mas de 5 fondos. Ademas el modelo permite mantener la seguridad pues permite evaluar la logica del negocio y observar que un usuario no reciba ni mas ni menos dinero de lo que corresponde.
+
 ### 3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
+
+La API Rest diseñada se puede ejecutar de dos maneras a nivel local:
+
+1. Ejecucion por medio docker y docker compose
+
+Veamos la ejecicion por medio de docker y docker compose:
+
+* Preferiblemente tener instalado Ubuntu 22.04.3 LTS (Jammy) (Windows tambien se puede pero debe poder instalar docker y docker compose).
+
+* Asegurate de instalar Docker version 24.0.7 y ademas Docker Compose version 2.21.0. El siguiente link te puede ayudar a obtener los dos https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+
+* Clone el repositorio con los siguientes comandos (debe tener instalado git)
+
+```bash
+git clone https://github.com/andresprogramacion123/prueba-tecnica-btg-desarrollador-backend-python.git
+```
+
+* Ingresa a la carpeta donde esta el proyecto
+
+```bash
+cd prueba-tecnica-btg-desarrollador-backend-python
+```
+
+* Posteriomente ejecute el archivo docker compose para ejecutar el proyecto
+
+```bash
+sudo docker compose up --build
+```
+
+* Visita http://localhost:5000/ en tu navegador para acceder a la aplicacion
+
+* Visita http://localhost:5000/docs en tu navegador para acceder a la documentación interactiva de la API generada automáticamente por FastAPI.
+
+**Nota:** En caso de tener problemas con puertos ya utilizados, ejecutar comando siguiente para conocer el ID del contenedor
+
+```bash
+sudo docker ps
+```
+
+Luego detener el contenedor con el siguiente comando
+
+```bash
+sudo docker stop ID_CONTENEDOR
+```
+
+2. Ejecucion sin utilizar docker y docker compose pero cumpliendo con los requistos de desarrollo.
 
 **Requisitos de desarrollo:**
 
@@ -44,8 +202,6 @@ A continuacion se van a describir los requisitos de desarrollo
 * Tener instalado Python 3.10.12 o superior
 * Tener instalado virtualenv para gestionar ambientes virtuales con python y no tener problemas con las dependencias (Aislar entornos de desarrollo)
 * Instalar MongoDB 8.0.3 https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/#std-label-install-mdb-community-ubuntu
-
-Nota: Por motivos de tiempo, no se ha utilizado Docker para empaquetar toda la aplicación. Usar Docker permitiría contenerizar tanto el sistema operativo Ubuntu como la versión de Python, eliminando la necesidad de crear ambientes virtuales.
 
 Despues de tener los anteriores requisitos es posible comenzar a clonar el repositorio
 
@@ -95,7 +251,7 @@ chmod +x app/prestart.sh
 
 * Visita `http://localhost:8000/docs` en tu navegador para acceder a la documentación interactiva de la API generada automáticamente por FastAPI
 
-* para ejecutar pruebas unitarias
+* Para ejecutar pruebas unitarias
 
 ```bash
 pytest

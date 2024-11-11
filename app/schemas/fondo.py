@@ -19,6 +19,6 @@ class Usuario(BaseModel):
     nombre: str
     correo: str
     telefono: int
-    saldo_disponible: float
+    saldo_disponible: float = 500000
     saldo_fondos:list[float]=[0,0,0,0,0]
     transacciones: List[dict] = []

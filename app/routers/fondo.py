@@ -8,10 +8,6 @@ from enum import Enum
 
 router = APIRouter()
 
-@router.get("/hola")
-def hola_mundo():
-    return {"Hola":"Mundo"}
-
 class TipoNotificacion(str, Enum):
     email = "email"
     sms = "sms"

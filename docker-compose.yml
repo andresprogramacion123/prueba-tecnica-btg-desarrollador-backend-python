@@ -1,0 +1,28 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  myapi:
+    build:
+      context: ./
+      network: host
+    container_name: myapi
+    restart: always
+    command: /start-reload.sh
+    ports:
+      - "5000:80"
+    environment:
+      - MONGO_DETAILS=mongodb://mongodb:27017
+      - PRE_START_PATH=/app/app/prestart.sh
+    depends_on:
+      - mongodb
+    volumes:
+      - ./app:/app/app
+
+volumes:
+  mongo_data:

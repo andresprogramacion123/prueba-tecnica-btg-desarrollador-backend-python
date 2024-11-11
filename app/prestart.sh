@@ -2,4 +2,4 @@
 
 echo "##### A continuacion vamos a ejecutar el script de python. Para ingresar datos de fondos####"
 
-python app/database/session.py
+python /app/app/database/session.py

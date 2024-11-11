@@ -1,0 +1,45 @@
+usando CloudFormation y EC2
+1. Preparar la Plantilla de CloudFormation
+Crea un archivo llamado cloudformation-template.yaml con el siguiente contenido:
+
+yaml
+Copiar código
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Despliegue de FastAPI en EC2 usando CloudFormation
+
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: "t2.micro"  # Puedes cambiar el tipo de instancia según tus necesidades
+      KeyName: "tu-key-pair"  # Reemplaza esto con el nombre de tu par de claves existente en AWS
+      ImageId: "ami-0c55b159cbfafe1f0"  # AMI de Amazon Linux 2 (verifica que esté disponible en tu región)
+      SecurityGroups:
+        - !Ref MySecurityGroup
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install python3 -y
+          sudo amazon-linux-extras install docker -y
+          sudo service docker start
+          sudo usermod -a -G docker ec2-user
+          sudo pip3 install fastapi uvicorn motor pymongo
+          git clone https://github.com/tu-repo.git /home/ec2-user/app  # Reemplaza con la URL de tu repositorio
+          cd /home/ec2-user/app
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+
+  MySecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "Permitir acceso HTTP y SSH"
+      VpcId: !Ref "AWS::EC2::VPC::Id"  # Se conecta al VPC predeterminado
+      SecurityGroupIngress:
+        - IpProtocol: "tcp"
+          FromPort: 22
+          ToPort: 22
+          CidrIp: "0.0.0.0/0"  # Asegúrate de restringir esto si es necesario
+        - IpProtocol: "tcp"
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: "0.0.0.0/0"  # Permite el acceso a la API en el puerto 8000

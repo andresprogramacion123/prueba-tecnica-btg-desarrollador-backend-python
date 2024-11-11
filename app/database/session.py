@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 
-MONGO_DETAILS = "mongodb://localhost:27017"
+MONGO_DETAILS = "mongodb://mongodb:27017"
 
 client = AsyncIOMotorClient(MONGO_DETAILS)
 db = client.btg_db
@@ -28,11 +28,10 @@ usuarios_db=[
 
 async def insertar_datos():
     try:
-        # Obtén la colección "fondos"
+        #colección "fondos"
         coleccion_fondos = db.fondos
-        # Obtén la colección "usuarios"
+        #colección "usuarios"
         coleccion_usuarios = db.usuarios
-        # Inserta los documentos
         result_fondos = await coleccion_fondos.insert_many(fondos_db)
         result_usuarios = await coleccion_usuarios.insert_many(usuarios_db)
         print("Documentos insertados")

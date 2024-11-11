@@ -2,6 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 
 MONGO_DETAILS = "mongodb://mongodb:27017"
+#MONGO_DETAILS = "mongodb://localhost:27017"
 
 client = AsyncIOMotorClient(MONGO_DETAILS)
 db = client.btg_db

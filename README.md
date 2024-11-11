@@ -153,7 +153,7 @@ Con este enfoque se tiene la posibilidad de que un usuario se puede suscribir a 
 
 Este diseño de modelo de datos permite mantener la escalabilidad parcial pues no se esta considerando el caso de que hayan mas de 5 fondos. Ademas el modelo permite mantener la seguridad pues permite evaluar la logica del negocio y observar que un usuario no reciba ni mas ni menos dinero de lo que corresponde.
 
-### 3.Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
+### 3. Construccion de la API REST con FastAPI y MongoDB y como ejecutar el proyecto a nivel local
 
 [Descargar video de ejecucion de proyecto](VideoEjecucion2min.mp4)
 
